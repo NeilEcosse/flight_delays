@@ -12,7 +12,7 @@ output:
 
 This project looks at the factors affecting delays to departures at Newark airport.
 
-The project brief I was given was:
+The brief I was given was:
 
 *You have been hired by Newark airport to investigate the effect of weather on aeroplane departure delays.*
 
@@ -20,9 +20,11 @@ The project brief I was given was:
 
 *They also want to understand how they compare to other New York airports.*
 
+## 2 Definitions
+
 For the purposes of this report, I am defining a late flight as one where the actual departure time was at least 15 minutes later than scheduled, in line with nationally reported statistics in the US^1^ 
 
-I am using data on departures for Jan-Dec 2017, and the airports in question are:
+I am using data on departures in 2017 from the following airports:
 
 | FAA Code 	| Name 	|
 |-	|-	|
@@ -65,7 +67,7 @@ mutate(snow_depth_day_total_inch_group = as.factor(snow_depth_day_total_inch_gro
 
 ```
 
-## 2 Overview - number and percentage of delayed flights
+## 3 Overview - number and percentage of delayed flights
 
 The charts below show a comparison of delayed flights at the three airports.
 
@@ -174,7 +176,7 @@ panel.background = element_blank(), axis.line = element_line(colour = "black")) 
        fill = "")
 ```
 
-## 3 Which factors have an impact on flight delays?
+## 4 Which factors have an impact on flight delays?
 
 To look into this, I have used information supplied with the brief on departures, weather and aircraft type. I have also sourced additional weather data^3^ because temperature and precipitation fields were largely unpopulated in the supplied file.
 
@@ -184,7 +186,7 @@ Once I had cleaned and joined the data *(see cleaning script saved in scripts/da
 
 
 
-### 3.1 Significance testing - all variables
+### 4.1 Significance testing - all variables
 
 
 I first created a model for Newark Airport using all the available variables.
@@ -201,7 +203,7 @@ This left me with the following list of significant variables:
 
 * wind speed (mph)
 
-* wind direction cardinal (N, S, E, W,)
+* wind direction cardinal (N, S, E, W)
 
 * precipitation daily total (inches)
 
@@ -250,9 +252,9 @@ clean_names(tidy(ewr_multi_logreg_model)) %>%
   arrange(desc(term))
 ```
 
-### 3.2 Significance testing - all variables - all NYC airports
+### 4.2 Significance testing - all variables - all NYC airports
 
-As a comparison, I ran the same model used for Newark for the other airports as well, rejecting variables which were not significant as described in section 3.1 above. 
+As a comparison, I ran the same model used for Newark for the other airports as well, rejecting variables which were not significant as described in section 4.1 above. 
 
 I do not think these figures should be used for any decision making purposes, but they are summarised below for information.
 
@@ -361,11 +363,11 @@ all_airports_significant_p_values <-
 ```
 
 
-### 3.3 Logistic models - with and without non-weather variable
+### 4.3 Logistic models - with and without non-weather variable
 
 The brief asked me to look at both weather and non-weather variables; however, only one non-weather variable (number of departures in scheduled departure hour) was found to be significant - I'll return to this later in the **Factors not covered by the model** section.
 
-I re-ran my logistic model for Newark (using the significant variables identified above) with and without *number of departures in scheduled departure hour*, to test which was a better model - this is measured with the AIC score: the lower the score, the better the model.
+I re-ran my logistic model for Newark (using the significant variables identified above) with and without *number of departures in scheduled departure hour*, to test which was a better model - this is measured using the AIC score: the lower the score, the better the model.
 
 The AIC for the model WITHOUT the non-weather variable came back as being the slightly better model, with an AIC score of 124,219 compared to 124,221 for the model which INCLUDED the non-weather variable.
 
@@ -418,7 +420,7 @@ glance_weather_out <- clean_names(glance(ewr_weather_logreg_model))
 glance_weather_out
 ```
 
-## 4 Factors not covered by the model
+## 5 Factors not covered by the model
 
 From the modeling above, it can be seen that when we look at the **available** variables in the data, weather factors are more important than non-weather factors when explaining variance in departure delays.
 
@@ -447,16 +449,16 @@ The `flights` dataset I'm using for this project only contains flights departing
 
 It should be possible to source the extra information needed to analyse the effect of late arrivals - there are many public domain sources of flight data - but I have decided not to at this stage; given the amount of data involved (sourcing previous flight information for around 300,000 departures),  I don't feel it would be practical within the limited timeframe available to complete this project.
 
-##  5 Conclusions
+##  6 Conclusions
 
 From the data available, it can be seen that a number of weather variables have a statistically important effect on variation within departure delays, whilst the *number departures in hour of scheduled departure* was the only significant non-weather variable.
 
-Some of these may indeed be important in a real-world context - severe weather conditions will obviously have an impact, and the number of departures may give useful indications on when the airport is reaching or exceeding capacity.
+Some of these may indeed be important in a real-world context - severe weather conditions will obviously have an impact, and the number of departures per hour may give useful indications on when the airport is reaching or exceeding capacity.
 
 
 However, there are a number of factors which may be even more significant (such as the effect the delayed arrival of an earlier flight by the departing aircraft) which cannot be investigated with the data used to produce this report.
 
-For this reason, I would strongly suggest a more in-depth analysis of a broader dataset before making any decisions on future investments; In particular, it may be useful to leverage the longstanding reporting on delay causes collated by the [Bureau of Transportation Statistics](https://www.transtats.bts.gov/OT_Delay/OT_DelayCause1.asp).
+For this reason, I would strongly suggest a more in-depth analysis of a broader dataset before making any decisions on future investments; in particular, it may be useful to leverage the longstanding reporting on delay causes collated by the [Bureau of Transportation Statistics](https://www.transtats.bts.gov/OT_Delay/OT_DelayCause1.asp).
 
 
 
@@ -497,11 +499,13 @@ For this reason, I would strongly suggest a more in-depth analysis of a broader 
 
 ### Appendix I -  missing data
 
-This is a summary of missing of incomplete data items, and how I handled them in my analysis
+This is a summary of missing of incomplete data items, and how I handled them in my analysis.
+
+The code behind this is saved in the file *scripts/data_load_clean.R*
 
 **Flights:**
 
-This is the table of departure information supplied with the brief
+This is the table of departure information supplied with the brief.
 
 * NA flight delay time - dropped 7,814 records where this was missing (of 303,748 total records)
 
@@ -513,17 +517,17 @@ This is also one of the tables supplied with the brief, and contains hourly weat
 
 * NA wind direction: replaced with a calculated daily median (2,661)
 
-* NA temperature : 25,642 of 26,201 records had NA for temperature - using NOAA min daily temperature instead
+* NA temperature : 25,642 of 26,201 records had NA for temperature - using NOAA max daily temperature instead
 
 * Precipitation: similar amount of NAs as there were for temperature, daily total from NOAA used instead
 
-* NA visibility - dropped records where this was missing (11)
+* NA visibility - dropped records where this was missing (11 records)
 
 **Planes:**
 
 This file, supplied with the brief, has information on various features of individual aircraft.
 
-602 planes which are in the `Flights` table, accounting for around 36,000 flights (more than 10% of total), are not present in the planes tables.
+602 planes which are in the `flights` table, accounting for around 36,000 flights (more than 10% of total), are not present in the `planes` tables.
 
 I tried downloading plane registration data from the Federal Aviation Administration (FAA) website, but returned an almost identical result (611 planes missing).
 https://www.faa.gov/licenses_certificates/aircraft_certification/aircraft_registry/releasable_aircraft_download/
