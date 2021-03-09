@@ -511,7 +511,7 @@ This is the table of departure information supplied with the brief.
 
 **Weather:**
 
-This is also one of the tables supplied with the brief, and contains hourly weather observatons for the three airports.
+This is also one of the tables supplied with the brief, and contains hourly weather observations for the three airports.
 
 * NA wind speed: replaced with avg daily wind speed from NOAA (2,647 records)
 
