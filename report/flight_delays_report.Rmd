@@ -430,7 +430,7 @@ However, before drawing any conclusions from this, it is important to consider w
 
 The US Bureau of Transportation Statistics (BTS) has been collating figures on the causes of delays and cancellations since 2003^4^. 
 
-Looking at their figures for late **arrivals and departures** at Newark in 2017^5^, you can see that there are some important factors which cannot be derived from the dataset used for my report.
+Looking at their figures for delays at Newark in 2017^5^, you can see that there are some important factors which cannot be derived from the dataset used for my report.
 
 
 
