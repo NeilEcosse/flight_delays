@@ -26,15 +26,19 @@ Examples of the tasks performed are shown below.
 
 
 Add a column showing if the flight was delayed:
+
 <img src = "readme_images/clean_delay_column.png">
 
 Add buckets for visibility:
+
 <img src = "readme_images/clean_visib.png">
 
 Impute missing wind directions using median for the day:
+
 <img src = "readme_images/clean_wind_dir.png">
 
 Convert Fahrenheit temperatures to Celsius so they are easier for me to understand in exploratory analysis:
+
 <img src = "readme_images/clean_temp.png">
 
 
