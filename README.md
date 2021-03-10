@@ -20,9 +20,9 @@ The code used to clean and join the raw data files is saved at `scripts/data_loa
 
 ## Data cleaning and feature engineering
 
-The cleaning script mentioned above handles missing data, created derived variables used in my exploratory analysis and in the logistic model, and joins the data.
+The cleaning script mentioned above handles missing data, creates derived variables used in my exploratory analysis and in the logistic model, and joins the data.
 
-Examples of the tasks performed are shown below
+Examples of the tasks performed are shown below.
 
 
 Add a column showing if the flight was delayed:
@@ -34,7 +34,7 @@ Add buckets for visibility:
 Impute missing wind directions using median for the day:
 <img src = "readme_images/clean_wind_dir.png">
 
-Convert Fahrenheit temperatures to Celsius - easier for me tounderstand in exploratory analysis:
+Convert Fahrenheit temperatures to Celsius so they are easier for me to understand in exploratory analysis:
 <img src = "readme_images/clean_temp.png">
 
 
