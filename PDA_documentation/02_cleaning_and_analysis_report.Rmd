@@ -12,7 +12,7 @@ library(modelr)
 library(GGally)
 library(broom)
 library(janitor)
-library(anyflights)
+library(DescTools)
 library(lubridate)
 library(readxl)
 ```
@@ -1056,14 +1056,14 @@ To look into this, I have used information supplied with the brief on departures
 
 Details on how I handled missing or incomplete data can be found in **Appendix I - missing data**
 
-Once I had cleaned and joined the data *(see cleaning script saved in scripts/data_load_clean.R)*, I used logistic modeling to identify variables which had a significant affect on variation in flight delays.
+Once I had cleaned and joined the data *(see cleaning script saved in scripts/data_load_clean.R)*, I used logistic modeling to identify variables which had a significant effect on variation in flight delays.
 
 
 
 ### 4.1 Significance testing - all variables
 
 
-I first created a model for Newark Airport using all the available variables.
+I first created a logistic model for Newark Airport using all the available variables.
 
 This returned a *p value* for each variable, which is a statistical test of whether it is significant or not in the model - variables with a p value greater than 0.05 are not significant, and were rejected.
 
@@ -1296,19 +1296,38 @@ glance_weather_out
 
 <br>
 
-## 5 Factors not covered by the model
+## 5 How good is the model at explaining variance in flight delays?
+
+There are various ways to test this,**^4^** **^5^** but I have chosen to use *McFadden's pseudo R squared*, which is a method of assessing the fit of a logistic regression.
+
+A value of > 0.2 is considered a good model fit, and > 0.4, indicates an excellent model fit.**^6^**
+
+The model for Newark using the significant variables identified above returns a score of **0.15**, which indicates that the available variables do not provide a particularly good explanation of variance in flight delays.
+
+This could be because there are important factors which are not included in the dataset used for the model.
+
+
+```{r}
+# Return the McFadden pseudo R squared score for the EWR model
+ewr_multi_logreg_model %>% 
+DescTools::PseudoR2(which = "McFadden")
+```
+
+<br>
+
+## 6 Factors not covered by the model
 
 From the modeling above, it can be seen that when we look at the **available** variables in the data, weather factors are more important than non-weather factors when explaining variance in departure delays.
 
 However, before drawing any conclusions from this, it is important to consider which factors are **not available** in the data.
 
+<br>
 
+The US Bureau of Transportation Statistics (BTS) has been collating figures on the causes of delays and cancellations since 2003**^7^**. 
 
-The US Bureau of Transportation Statistics (BTS) has been collating figures on the causes of delays and cancellations since 2003**^4^**. 
+Looking at their figures for late **arrivals and departures** at Newark in 2017**^8^**, you can see that there are some important factors which cannot be derived from the dataset used for my report.
 
-Looking at their figures for late **arrivals and departures** at Newark in 2017**^5^**, you can see that there are some important factors which cannot be derived from the dataset used for my report.
-
-
+<br>
 
 
 
@@ -1322,20 +1341,21 @@ I'm ignoring **national aviation system delay** for the moment - this is a compl
 
 However, **aircraft arriving late** is a potentially important factor in departure delays - for example, if the aircraft is late arriving from a previous flight, then its next departure is also likely to be delayed.
 
-The `flights` dataset I'm using for this project only contains flights departing from the three NYC airports in 2017 - there is no information on previous flights for the aircraft involved.
+The `flights` dataset I'm using for this project only contains flights *departing* from the three NYC airports in 2017 - there is no information on previous flights for the aircraft involved.
 
 It should be possible to source the extra information needed to analyse the effect of late arrivals - there are many public domain sources of flight data - but I have decided not to at this stage; given the amount of data involved (sourcing previous flight information for around 300,000 departures),  I don't feel it would be practical within the limited timeframe available to complete this project.
 
 <br>
 
-##  6 Conclusions
+##  7 Conclusions
 
 From the data available, it can be seen that a number of weather variables have a statistically important effect on variation within departure delays, whilst the *number departures in hour of scheduled departure* was the only significant non-weather variable.
 
 Some of these may indeed be important in a real-world context - severe weather conditions will obviously have an impact, and the number of departures per hour may give useful indications on when the airport is reaching or exceeding capacity.
 
+However, the model created using the datasets made available with the project brief does not provide a particularly good explanation of variance in departure delays.
 
-However, there are a number of factors which may be even more significant (such as the effect the delayed arrival of an earlier flight by the departing aircraft) which cannot be investigated with the data used to produce this report.
+There are a number of additional factors which may also be significant (such as the effect the delayed arrival of an earlier flight by the departing aircraft) which cannot be investigated with the data used to produce this report.
 
 For this reason, I would strongly suggest a more in-depth analysis of a broader dataset before making any decisions on future investments; in particular, it may be useful to leverage the longstanding reporting on delay causes collated by the [Bureau of Transportation Statistics](https://www.transtats.bts.gov/OT_Delay/OT_DelayCause1.asp).
 
@@ -1352,9 +1372,15 @@ For this reason, I would strongly suggest a more in-depth analysis of a broader 
 
 3 -   Daily precipitation and temperature figures for the three airports sourced from the US National Oceanic and Atmospheric Administration (NOAA) https://www.ncdc.noaa.gov/cdo-web/search
 
-4 -   BTS: Understanding the Reporting of Causes of Flight Delays and Cancellations https://www.bts.gov/topics/airlines-and-airports/understanding-reporting-causes-flight-delays-and-cancellations
+4 -  UCLA FAQ: What are pseudo r-squareds? https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-what-are-pseudo-r-squareds/
 
-5 -   BTS: Airline On-Time Statistics and Delay Causes https://www.transtats.bts.gov/OT_Delay/OT_DelayCause1.asp?20=E
+5 -   Pseudo R2 Statistics in R https://www.rdocumentation.org/packages/DescTools/versions/0.99.40/topics/PseudoR2
+
+6 -    Giselmar A. J. Hemmert, Laura M. Schons, Jan Wieseke, and Heiko Schimmelpfennig (2016). Log-likelihood-based Pseudo-R2 in Logistic Regression: Deriving Sample-sensitive Benchmarks https://journals.sagepub.com/doi/abs/10.1177/0049124116638107?journalCode=smra
+
+7 -   BTS: Understanding the Reporting of Causes of Flight Delays and Cancellations https://www.bts.gov/topics/airlines-and-airports/understanding-reporting-causes-flight-delays-and-cancellations
+
+8 -   BTS: Airline On-Time Statistics and Delay Causes https://www.transtats.bts.gov/OT_Delay/OT_DelayCause1.asp?20=E
 
 
 <br>
