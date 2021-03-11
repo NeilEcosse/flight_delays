@@ -38,7 +38,14 @@ The brief I was given was:
 
 For the purposes of this report, I am defining a late flight as one where the actual departure time was at least 15 minutes later than scheduled, in line with nationally reported statistics in the US**^1^** 
 
-I am using data on departures in 2017 from the following airports:
+I am using data on departures in 2017, along with weather observations and other reference data.
+
+A diagram summarising the data used can be found in  **Appendix I - data sources**.
+
+Details on how I handled missing data can be found in **Appendix II - missing data**.
+
+
+The data covers three New York airports:
 
 | FAA Code 	| Name 	|
 |-	|-	|
@@ -46,7 +53,7 @@ I am using data on departures in 2017 from the following airports:
 | JFK 	| John F Kennedy International Airport 	|
 | LGA 	| La Guardia Airport 	|
 
-Details on how I handled missing data can be found in **Appendix I - missing data**
+
 
 The missing data changes were applied using a cleaning script saved at *scripts/data_load_clean.R* - this file also joins the source data tables, and creates some derived fields used in my exploratory analysis (e.g. columns converting Fahrenheit temperatures to Celsius, and columns which summarise continuous data such as wind speed into buckets).
 
@@ -1054,8 +1061,6 @@ panel.background = element_blank(), axis.line = element_line(colour = "black")) 
 
 To look into this, I have used information supplied with the brief on departures, weather and aircraft type. I have also sourced additional weather data**^3^** because temperature and precipitation fields were largely unpopulated in the supplied file.
 
-Details on how I handled missing or incomplete data can be found in **Appendix I - missing data**
-
 Once I had cleaned and joined the data *(see cleaning script saved in scripts/data_load_clean.R)*, I used logistic modeling to identify variables which had a significant effect on variation in flight delays.
 
 
@@ -1387,8 +1392,13 @@ For this reason, I would strongly suggest a more in-depth analysis of a broader 
 
 <br>
 
+### Appendix I - data sources
 
-### Appendix I -  missing data
+<img src = "images/all_data_sources.png">
+
+<br>
+
+### Appendix II -  missing data
 
 This is a summary of missing data items, and how I handled them in my analysis.
 
@@ -1419,9 +1429,9 @@ This is also one of the tables supplied with the brief, and contains hourly weat
 
 **Planes:**
 
-This file, supplied with the brief, has information on various features of individual aircraft.
+This file has information on various features of individual aircraft.
 
-602 planes which are in the `flights` table, accounting for around 36,000 flights (more than 10% of total), are not present in the `planes` tables.
+602 planes which are in the `flights` table, accounting for around 36,000 flights (more than 10% of total), are not present in the `planes` table.
 
 I tried downloading plane registration data from the Federal Aviation Administration (FAA) website, but returned an almost identical result (611 planes missing).
 https://www.faa.gov/licenses_certificates/aircraft_certification/aircraft_registry/releasable_aircraft_download/
