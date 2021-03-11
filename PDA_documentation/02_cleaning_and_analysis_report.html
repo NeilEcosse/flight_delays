@@ -228,7 +228,8 @@ library(readxl)</code></pre>
 <h2>2 Definitions</h2>
 <p>For the purposes of this report, I am defining a late flight as one where the actual departure time was at least 15 minutes later than scheduled, in line with nationally reported statistics in the US<strong><sup>1</sup></strong></p>
 <p>I am using data on departures in 2017, along with weather observations and other reference data.</p>
-<p>A diagram summarising the data used can be found in <strong>Appendix I - data sources</strong></p>
+<p>A diagram summarising the data used can be found in <strong>Appendix I - data sources</strong>.</p>
+<p>Details on how I handled missing data can be found in <strong>Appendix II - missing data</strong>.</p>
 <p>The data covers three New York airports:</p>
 <table>
 <thead>
@@ -252,7 +253,6 @@ library(readxl)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Details on how I handled missing data can be found in <strong>Appendix II - missing data</strong></p>
 <p>The missing data changes were applied using a cleaning script saved at <em>scripts/data_load_clean.R</em> - this file also joins the source data tables, and creates some derived fields used in my exploratory analysis (e.g. columns converting Fahrenheit temperatures to Celsius, and columns which summarise continuous data such as wind speed into buckets).</p>
 <p>Full details of the cleaning script are shown in the code chunk below.</p>
 <p><strong>Throughout this document, please click on <code>Code</code> buttons to see coding details.</strong></p>
@@ -1233,7 +1233,6 @@ panel.background = element_blank(), axis.line = element_line(colour = &quot;blac
 <div id="which-factors-have-an-impact-on-flight-delays" class="section level2">
 <h2>4 Which factors have an impact on flight delays?</h2>
 <p>To look into this, I have used information supplied with the brief on departures, weather and aircraft type. I have also sourced additional weather data<strong><sup>3</sup></strong> because temperature and precipitation fields were largely unpopulated in the supplied file.</p>
-<p>Details on how I handled missing or incomplete data can be found in <strong>Appendix II - missing data</strong></p>
 <p>Once I had cleaned and joined the data <em>(see cleaning script saved in scripts/data_load_clean.R)</em>, I used logistic modeling to identify variables which had a significant effect on variation in flight delays.</p>
 <div id="significance-testing---all-variables" class="section level3">
 <h3>4.1 Significance testing - all variables</h3>
