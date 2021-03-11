@@ -68,7 +68,9 @@ Convert Fahrenheit temperatures to Celsius so they are easier for me to understa
 
 <img src = "readme_images/report8refs.png">
 
-<img src = "readme_images/report9appendix.png">
+<img src = "readme_images/report9appendixI.png">
+
+<img src = "readme_images/report9appendixII.png">
 
 ## References mentioned in the report
 
